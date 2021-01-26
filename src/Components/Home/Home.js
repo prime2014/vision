@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../index.css';
 import { loginAPI } from "../../Api/login/login";
+import { Link } from "react-router-dom";
 
 
 const Home = (props) => {
@@ -45,6 +46,9 @@ const Home = (props) => {
                 <div className="pb-2">
                     <label>Enter password*</label>
                     <input className="form-control" onChange={handlePassword} type="password" name="password" value={credentials.password} placeholder="Enter the password" />
+                </div>
+                <div>
+                    <p>Don't have an account? <Link to="/auth/sign-up">Sign Up</Link></p>
                 </div>
                 <button className="login-btn">Login</button>
             </form>

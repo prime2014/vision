@@ -36,6 +36,7 @@ const postTask = async (data) => {
         let response = await client.post('/projects/tasks/', data);
         let task = null;
         if (response) task = response.data;
+        console.log(task);
         return task;
     } catch (error) {
         throw Error('The data could not be added');

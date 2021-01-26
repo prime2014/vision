@@ -110,10 +110,22 @@ class ProjectBoard extends Component {
         })
     }
 
-    closeDetailModal = event => {
+    closeDetailModal = (data) => {
+        let new_tasks = this.state.tasks.map(item => {
+            if (item.pk === data.action) {
+                item.action_card.map(element => {
+                    if (element.pk === data.pk) {
+                        return element.assigned = [...data.assigned];
+                    }
+                    return element.assigned;
+                })
+            }
+            return item;
+        })
         this.setState({
             open_detail: false,
-            selected_pk: 0
+            selected_pk: 0,
+            tasks: [...new_tasks]
         })
     }
 
@@ -126,7 +138,7 @@ class ProjectBoard extends Component {
             loading: true
         }, () => {
             let { action, title, description, due_date } = this.state;
-            if (title && due_date) {
+            if (title) {
                 projectApi.postTask({ action, title, description, due_date }).then(resp => {
                     let index = this.state.tasks.findIndex(item => {
                         return item.pk === this.state.action
@@ -160,7 +172,8 @@ class ProjectBoard extends Component {
 
 
     render() {
-
+        console.log(this.state.tasks);
+        console.log(this.state.project_data);
         let task = this.state.tasks.map(element => {
             return (
 
@@ -172,10 +185,22 @@ class ProjectBoard extends Component {
                                 return (
                                     <li className="card_list" key={index}>
                                         <p onClick={() => this.handleShowDetail(item.pk)} className="text-info task_text">{item.title.length <= item.title.substring(0, 40).length ? item.title : item.title.substring(0, 35) + "..."}</p>
-                                        <div className="event_icons px-1">
-                                            <span className="clock"><i className="fa fa-clock-o" aria-hidden="true"></i> Due Date</span>
-                                            <span className="text-success"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</span>
-                                            <span className="text-danger"><i className="fa fa-trash" aria-hidden="true"></i> Delete</span>
+                                        <div className="event_icons px-3 py-1">
+                                            {item.due_date !== null ?
+                                                <div>
+                                                    <i className="fa fa-calendar text-info" aria-hidden="true"></i>
+                                                </div> : ""}
+                                            <div>
+                                                {this.state.project_data.members.map(member => {
+                                                    return item.assigned.includes(member.user.url) ?
+                                                        <span className="pr-1">
+                                                            <Avatar key={item.id} sizes="xl" variant="circular" src={member.image}>
+                                                                {member.user.username.substring(0, 1).toUpperCase()}
+                                                            </Avatar>
+                                                        </span> :
+                                                        <></>
+                                                }, item)}
+                                            </div>
                                         </div>
                                         <div className="arrows px-2">
                                             <span className="arr" onClick={() => this.handleShiftPrevious(element.pk, item.pk)}><ArrowBack color="primary" fontSize="small" /></span>
@@ -215,7 +240,7 @@ class ProjectBoard extends Component {
                 <SnackBar anchorOrigin={{ vertical, horizontal }} open={this.state.errorMessage} autoHideDuration={5000} onClose={this.handleCloseErrorAlert}>
                     <Alert onClose={this.handleCloseErrorAlert} variant="filled" icon={<ErrorIcon fontSize="inherit" />} severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        The Task and Due Date are required
+                        The Task must be filled
                     </Alert>
                 </SnackBar>
                 <Backdrop style={backdrop} open={this.state.loading}>

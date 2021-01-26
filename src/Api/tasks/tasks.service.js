@@ -27,6 +27,43 @@ const shiftTaskCardNext = async (action_id, task_id) => {
     }
 }
 
+
+const assignUserToTask = async (pk, data) => {
+    try {
+        let response = await client.put(`/projects/tasks/${pk}/assign_task/`, data);
+        let members = null;
+        if (response) members = response.data;
+        return members;
+    } catch (error) {
+        throw Error('Could not assign user')
+    }
+}
+
+
+const removeAssignedUser = async (pk, data) => {
+    try {
+        let response = await client.put(`/projects/tasks/${pk}/remove_assigned/`, data);
+        let members = null;
+        if (response) members = response.data;
+        return members;
+    } catch (error) {
+        throw Error('Could not remove user');
+    }
+}
+
+
+const assignUserWatch = async (pk, data) => {
+    try {
+        let response = await client.put(`/projects/tasks/${pk}/assign_watch/`, data);
+        let members = null;
+        if (response) members = response.data;
+        return members;
+    } catch (error) {
+        throw Error('Could not assign watch to user')
+    }
+}
+
+
 const shiftTaskCardPrevious = async (action_id, task_id) => {
     let action = action_id;
     action -= 1
@@ -44,5 +81,8 @@ const shiftTaskCardPrevious = async (action_id, task_id) => {
 export const tasksAPI = {
     getSelectedTask,
     shiftTaskCardNext,
-    shiftTaskCardPrevious
+    shiftTaskCardPrevious,
+    assignUserToTask,
+    removeAssignedUser,
+    assignUserWatch
 }

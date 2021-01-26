@@ -52,6 +52,13 @@ body {
 .event_icons:hover {
   cursor: pointer;
 }
+
+.event_icons div {
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  
+}
 .edit_modal {
   width:70vw;
 }
@@ -345,6 +352,22 @@ aside {
   border-radius: 5px;
   color:white;
 }
+
+.signup-nav {
+  background:linear-gradient(to right, darkred 80%, rgb(87, 1, 1));
+  color:white;
+}
+.signup_form {
+  width:70vw;
+  margin:auto;
+  border:1px solid #ccc;
+  margin-top:20px;
+}
+.signup-nav h5 {
+  margin:0;
+  padding:0;
+}
+
 .todo-items div {
   font-size: 19px;
   

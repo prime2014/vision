@@ -7,6 +7,7 @@ import Todo from "./Components/Todo/Todo";
 import { SWRConfig } from "swr";
 import axios from "axios";
 import ProjectBoard from "./Components/Board/ProjectBoard";
+import Signup from "./Components/Signup/Signup";
 
 const base = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -31,6 +32,7 @@ function App() {
             <Route path="/events" component={Calendar} />
             <Route exact path="/projects" component={Projects} />
             <Route path="/projects/:slug/:id" component={ProjectBoard} />
+            <Route path="/auth/sign-up" component={Signup} />
           </Switch>
         </div>
       </Router>
